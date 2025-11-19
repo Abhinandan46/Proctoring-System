@@ -5,9 +5,14 @@ const auth = require('../middleware/auth');
 const router = express.Router();
 
 router.post('/log', auth, async (req, res) => {
-  const log = new ProctorLog({ ...req.body, user: req.user.id });
-  await log.save();
-  res.json(log);
+  try {
+    const log = new ProctorLog({ ...req.body, user: req.user.id });
+    await log.save();
+    res.json(log);
+  } catch (error) {
+    console.error('Error logging proctor event:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
 });
 
 module.exports = router;

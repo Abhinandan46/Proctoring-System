@@ -12,7 +12,7 @@ const testSchema = new mongoose.Schema({
   description: String,
   duration: Number,
   questions: [questionSchema],
-  published: { type: Boolean, default: false },
+  published: { type: Boolean, default: true },
   createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
 });
 

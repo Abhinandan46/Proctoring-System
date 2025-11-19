@@ -7,6 +7,7 @@ const Login = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -16,10 +17,11 @@ const Login = () => {
     setLoading(true);
     const url = isLogin ? 'http://localhost:5000/api/auth/login' : 'http://localhost:5000/api/auth/register';
     try {
+      const body = isLogin ? { email, password } : { email, password, name, role: 'candidate' };
       const response = await fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify(body),
       });
       const data = await response.json();
       if (response.ok) {
@@ -65,6 +67,19 @@ const Login = () => {
         <div>
           <h2 className="text-xl font-semibold mb-6 text-center text-gray-800 dark:text-white">{isLogin ? 'Welcome Back' : 'Create Account'}</h2>
           <form onSubmit={handleSubmit} className="space-y-4">
+            {!isLogin && (
+              <div className="relative">
+                <FaUser className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" />
+                <input
+                  type="text"
+                  placeholder="Full Name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="input pl-10"
+                  required
+                />
+              </div>
+            )}
             <div className="relative">
               <FaUser className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" />
               <input

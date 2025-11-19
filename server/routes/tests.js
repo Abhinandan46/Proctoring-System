@@ -82,8 +82,9 @@ router.patch('/:id/publish', auth, async (req, res) => {
 router.post('/generate', auth, async (req, res) => {
   try {
     const { topic, numQuestions, difficulty } = req.body;
+    console.log('Generating test for:', topic, numQuestions, difficulty);
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-    const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
+    const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
 
     const prompt = `Generate a multiple-choice quiz on the topic "${topic}" with ${numQuestions} questions. Each question should have 4 options (A, B, C, D) and one correct answer. Difficulty level: ${difficulty}. Format the response as JSON with the following structure:
     {
@@ -97,9 +98,11 @@ router.post('/generate', auth, async (req, res) => {
       ]
     }`;
 
+    console.log('Calling Gemini API...');
     const result = await model.generateContent(prompt);
     const response = await result.response;
     const text = response.text();
+    console.log('Gemini response:', text);
 
     // Parse the JSON response
     const generatedTest = JSON.parse(text.replace(/```json\n?|\n?```/g, ''));

@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const Test = require('../models/Test');
 const auth = require('../middleware/auth');
+const { GoogleGenerativeAI } = require('@google/generative-ai');
 
 const router = express.Router();
 
@@ -75,6 +76,38 @@ router.patch('/:id/publish', auth, async (req, res) => {
   } catch (error) {
     console.error('Error publishing test:', error);
     res.status(500).json({ message: 'Server error' });
+  }
+});
+
+router.post('/generate', auth, async (req, res) => {
+  try {
+    const { topic, numQuestions, difficulty } = req.body;
+    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+
+    const prompt = `Generate a multiple-choice quiz on the topic "${topic}" with ${numQuestions} questions. Each question should have 4 options (A, B, C, D) and one correct answer. Difficulty level: ${difficulty}. Format the response as JSON with the following structure:
+    {
+      "questions": [
+        {
+          "question": "Question text",
+          "type": "mcq",
+          "options": ["A) Option1", "B) Option2", "C) Option3", "D) Option4"],
+          "correctAnswer": "A"
+        }
+      ]
+    }`;
+
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    const text = response.text();
+
+    // Parse the JSON response
+    const generatedTest = JSON.parse(text.replace(/```json\n?|\n?```/g, ''));
+
+    res.json(generatedTest);
+  } catch (error) {
+    console.error('Error generating test:', error);
+    res.status(500).json({ message: 'Error generating test' });
   }
 });
 

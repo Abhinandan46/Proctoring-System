@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { motion } from 'framer-motion';
-import { FaPlus, FaTrash, FaSave, FaQuestionCircle, FaListOl, FaFileAlt, FaClock } from 'react-icons/fa';
+import { FaPlus, FaTrash, FaSave, FaQuestionCircle, FaListOl, FaFileAlt, FaClock, FaRobot } from 'react-icons/fa';
 import ThemeToggle from '../components/ThemeToggle';
 
 const CreateTest = () => {
@@ -9,6 +9,10 @@ const CreateTest = () => {
   const [description, setDescription] = useState('');
   const [duration, setDuration] = useState(60);
   const [questions, setQuestions] = useState([]);
+  const [aiTopic, setAiTopic] = useState('');
+  const [aiNumQuestions, setAiNumQuestions] = useState(5);
+  const [aiDifficulty, setAiDifficulty] = useState('medium');
+  const [generating, setGenerating] = useState(false);
 
   const addQuestion = () => {
     setQuestions([...questions, { question: '', type: 'mcq', options: ['', ''], correctAnswer: '' }]);
@@ -32,6 +36,32 @@ const CreateTest = () => {
       headers: { Authorization: `Bearer ${token}` }
     });
     alert('Test created');
+  };
+
+  const generateWithAI = async () => {
+    if (!aiTopic.trim()) {
+      alert('Please enter a topic');
+      return;
+    }
+    setGenerating(true);
+    try {
+      const token = localStorage.getItem('token');
+      const res = await axios.post('/api/tests/generate', {
+        topic: aiTopic,
+        numQuestions: aiNumQuestions,
+        difficulty: aiDifficulty
+      }, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setQuestions(res.data.questions);
+      setTitle(`${aiTopic} Quiz`);
+      setDescription(`AI-generated quiz on ${aiTopic} (${aiDifficulty} difficulty)`);
+    } catch (error) {
+      console.error('Error generating test:', error);
+      alert('Failed to generate test. Please try again.');
+    } finally {
+      setGenerating(false);
+    }
   };
 
   return (
@@ -108,6 +138,65 @@ const CreateTest = () => {
               />
             </div>
           </div>
+        </motion.div>
+
+        {/* AI Generation Card */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg border border-white/30 dark:border-gray-700/30 rounded-3xl p-6 shadow-2xl mb-8"
+        >
+          <h2 className="text-2xl font-semibold text-gray-800 dark:text-white mb-6 flex items-center">
+            <FaRobot className="mr-3 text-green-500" />
+            AI Test Generation
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Topic</label>
+              <input
+                className="w-full px-4 py-3 bg-white/10 dark:bg-gray-700/10 border border-white/20 dark:border-gray-600/20 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-gray-800 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
+                placeholder="e.g., JavaScript, History, Math"
+                value={aiTopic}
+                onChange={e => setAiTopic(e.target.value)}
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Number of Questions</label>
+              <select
+                className="w-full px-4 py-3 bg-white/10 dark:bg-gray-700/10 border border-white/20 dark:border-gray-600/20 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-gray-800 dark:text-white"
+                value={aiNumQuestions}
+                onChange={e => setAiNumQuestions(parseInt(e.target.value))}
+              >
+                <option value={5}>5 Questions</option>
+                <option value={10}>10 Questions</option>
+                <option value={15}>15 Questions</option>
+                <option value={20}>20 Questions</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Difficulty</label>
+              <select
+                className="w-full px-4 py-3 bg-white/10 dark:bg-gray-700/10 border border-white/20 dark:border-gray-600/20 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-gray-800 dark:text-white"
+                value={aiDifficulty}
+                onChange={e => setAiDifficulty(e.target.value)}
+              >
+                <option value="easy">Easy</option>
+                <option value="medium">Medium</option>
+                <option value="hard">Hard</option>
+              </select>
+            </div>
+          </div>
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="bg-gradient-to-r from-purple-500 to-pink-500 dark:from-purple-600 dark:to-pink-600 hover:from-purple-600 hover:to-pink-600 dark:hover:from-purple-700 dark:hover:to-pink-700 text-white px-6 py-3 rounded-xl font-medium transition-all duration-300 hover:shadow-lg transform flex items-center disabled:opacity-50 disabled:cursor-not-allowed"
+            onClick={generateWithAI}
+            disabled={generating}
+          >
+            <FaRobot className="mr-2" />
+            {generating ? 'Generating...' : 'Generate with AI'}
+          </motion.button>
         </motion.div>
 
         {/* Questions Section */}

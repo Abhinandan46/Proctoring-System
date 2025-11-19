@@ -9,13 +9,16 @@ A comprehensive web-based examination platform with advanced AI-powered proctori
 - **User Dashboard**: View profile, available tests, and test history
 - **Profile Management**: Edit personal information
 - **AI-Monitored Testing**: Real-time proctoring during exams
+- **Enhanced Exam UI**: One-question-per-page navigation with progress bars
 - **Results Tracking**: View detailed test results and performance
 
 ### For Administrators
 - **Test Management**: Create, publish, unpublish, and delete tests
+- **AI Test Generation**: Automatically generate test questions using Google Gemini AI
 - **Candidate Oversight**: View all registered candidates with complete profiles
 - **Results Monitoring**: Access comprehensive test results and analytics
 - **User Management**: Manage candidate accounts and permissions
+- **Delete Functionality**: Remove tests and results as needed
 
 ### AI Proctoring Features
 - **Face Detection**: Real-time facial recognition using advanced AI
@@ -23,6 +26,7 @@ A comprehensive web-based examination platform with advanced AI-powered proctori
 - **Audio Monitoring**: Detects background noise and suspicious audio
 - **Violation Logging**: Automatic recording of proctoring violations
 - **Real-time Alerts**: Immediate notifications for suspicious activities
+- **Proctoring Logs**: Detailed logs of all proctoring events during exams
 
 ## 🛠️ Tech Stack
 
@@ -45,6 +49,7 @@ A comprehensive web-based examination platform with advanced AI-powered proctori
 - **Axios** - Promise-based HTTP client
 - **React Icons** - Popular icons library
 - **Web Audio API** - Audio processing for noise detection
+- **Google Generative AI** - AI-powered test question generation
 
 ## 📋 Prerequisites
 
@@ -80,11 +85,12 @@ Before running this application, make sure you have the following installed:
      ```
      MONGO_URI=your_mongodb_connection_string
      JWT_SECRET=your_jwt_secret_key
+     GOOGLE_AI_API_KEY=your_google_generative_ai_api_key
      ```
 
 5. **Start MongoDB:**
    - Ensure MongoDB is running on your system
-   - Or update `MONGO_URI` to point to your MongoDB Atlas cluster
+   - Or update `MONGO_URI` to point to your MongoDB Atlas cluster for cloud database
 
 ## 🚀 Running the Application
 

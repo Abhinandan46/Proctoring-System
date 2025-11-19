@@ -1,131 +1,175 @@
-# AI-Enabled Proctoring Exam System
+# AI Proctoring System
 
-A full-stack web application for conducting proctored exams with AI-powered monitoring using face detection, noise detection, and tab switching prevention.
+A comprehensive web-based examination platform with advanced AI-powered proctoring capabilities to ensure exam integrity and prevent cheating.
 
-## Features
+## 🚀 Features
 
-- **User Authentication**: JWT-based login for admins and candidates
-- **Admin Dashboard**: Manage tests, candidates, and view results
-- **Test Creation & Management**: Create, edit, publish, and delete tests
-- **Candidate Management**: Add and view candidates
-- **Proctored Test Taking**: Real-time monitoring with face detection, noise detection, and tab switching alerts
-- **Results & Analytics**: View scores and detailed results with charts
+### For Candidates
+- **Secure Registration**: Complete profile setup with personal information
+- **User Dashboard**: View profile, available tests, and test history
+- **Profile Management**: Edit personal information
+- **AI-Monitored Testing**: Real-time proctoring during exams
+- **Results Tracking**: View detailed test results and performance
 
-## Tech Stack
+### For Administrators
+- **Test Management**: Create, publish, unpublish, and delete tests
+- **Candidate Oversight**: View all registered candidates with complete profiles
+- **Results Monitoring**: Access comprehensive test results and analytics
+- **User Management**: Manage candidate accounts and permissions
 
-- **Frontend**: React, Vite, Tailwind CSS, shadcn/ui, Axios, React Router, Recharts, Framer Motion
-- **Backend**: Node.js, Express, MongoDB, Mongoose, JWT, Bcrypt
-- **AI Proctoring**: face-api.js for face detection, Web Audio API for noise, visibilitychange for tab switching
+### AI Proctoring Features
+- **Face Detection**: Real-time facial recognition using advanced AI
+- **Tab Switching Detection**: Monitors browser tab changes
+- **Audio Monitoring**: Detects background noise and suspicious audio
+- **Violation Logging**: Automatic recording of proctoring violations
+- **Real-time Alerts**: Immediate notifications for suspicious activities
 
-## Installation
+## 🛠️ Tech Stack
 
-### Prerequisites
+### Frontend
+- **React** - Modern JavaScript library for building user interfaces
+- **React Router** - Declarative routing for React applications
+- **Tailwind CSS** - Utility-first CSS framework
+- **Framer Motion** - Production-ready motion library for React
+- **Face-API.js** - JavaScript API for face detection and recognition
 
-- Node.js (v14 or higher)
-- MongoDB (local or cloud instance)
-- Git
+### Backend
+- **Node.js** - JavaScript runtime built on Chrome's V8 engine
+- **Express.js** - Fast, unopinionated, minimalist web framework
+- **MongoDB** - NoSQL document database
+- **Mongoose** - Elegant MongoDB object modeling for Node.js
+- **JWT** - JSON Web Tokens for authentication
+- **bcrypt** - Password hashing library
 
-### Backend Setup
+### Additional Libraries
+- **Axios** - Promise-based HTTP client
+- **React Icons** - Popular icons library
+- **Web Audio API** - Audio processing for noise detection
 
-1. Navigate to the server directory:
+## 📋 Prerequisites
+
+Before running this application, make sure you have the following installed:
+
+- **Node.js** (version 14 or higher)
+- **MongoDB** (local installation or cloud service like MongoDB Atlas)
+- **Git** (for cloning the repository)
+
+## 🔧 Installation
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/Abhinandan46/Proctoring-System.git
+   cd Proctoring-System
    ```
+
+2. **Install server dependencies:**
+   ```bash
    cd server
-   ```
-
-2. Install dependencies:
-   ```
    npm install
    ```
 
-3. Create a `.env` file in the server directory with the following:
-   ```
-   MONGO_URI=mongodb://localhost:27017/proctoring-system
-   JWT_SECRET=your-secret-key
-   ```
-
-4. Start MongoDB (if local).
-
-5. Seed the database with dummy data:
-   ```
-   node seed.js
+3. **Install client dependencies:**
+   ```bash
+   cd ../client
+   npm install
    ```
 
-6. Start the server:
-   ```
+4. **Environment Setup:**
+   - Create a `.env` file in the `server` directory
+   - Add the following environment variables:
+     ```
+     MONGO_URI=your_mongodb_connection_string
+     JWT_SECRET=your_jwt_secret_key
+     ```
+
+5. **Start MongoDB:**
+   - Ensure MongoDB is running on your system
+   - Or update `MONGO_URI` to point to your MongoDB Atlas cluster
+
+## 🚀 Running the Application
+
+### Development Mode
+
+1. **Start the backend server:**
+   ```bash
+   cd server
    npm start
    ```
-   The server will run on http://localhost:5000.
+   The server will run on `http://localhost:5000`
 
-### Frontend Setup
-
-1. Navigate to the client directory:
-   ```
+2. **Start the frontend client:**
+   ```bash
    cd client
+   npm start
    ```
+   The client will run on `http://localhost:3000`
 
-2. Install dependencies:
-   ```
-   npm install
-   ```
+### Production Build
 
-3. Download face-api.js models (already done if following steps):
-   - Models are in `client/public/models/`
-
-4. Start the development server:
-   ```
-   npm run dev
-   ```
-   The app will run on http://localhost:5173.
-
-## Usage
-
-1. **Admin Login**: Use `admin@example.com` / `admin123` to log in as admin.
-2. **Candidate Login**: Use `candidate@example.com` / `candidate123` to log in as candidate.
-3. **Create Tests**: As admin, create tests with questions.
-4. **Take Tests**: As candidate, start tests with proctoring enabled.
-5. **Monitor**: Real-time alerts for violations.
-
-## Deployment
-
-### Backend Deployment (e.g., Heroku)
-
-1. Set environment variables in Heroku.
-2. Deploy the server folder.
-
-### Frontend Deployment (e.g., Vercel)
-
-1. Build the client:
-   ```
+1. **Build the client:**
+   ```bash
+   cd client
    npm run build
    ```
-2. Deploy the `dist` folder to Vercel.
 
-### Database
+2. **Start the production server:**
+   ```bash
+   cd server
+   npm start
+   ```
 
-Use MongoDB Atlas for cloud database.
+## 📖 Usage
 
-## API Endpoints
+### For Candidates:
+1. **Register**: Create an account with complete profile information
+2. **Login**: Access your dashboard
+3. **Take Tests**: Select available tests and complete them under AI supervision
+4. **View Results**: Check your test scores and performance history
 
-- `POST /api/auth/register` - Register user
-- `POST /api/auth/login` - Login
-- `GET /api/auth/me` - Get current user
-- `GET /api/tests` - Get all tests
-- `POST /api/tests` - Create test
-- `PUT /api/tests/:id/publish` - Publish test
-- `DELETE /api/tests/:id` - Delete test
-- `GET /api/candidates` - Get candidates
-- `POST /api/candidates` - Add candidate
-- `GET /api/results` - Get results
-- `POST /api/results/submit` - Submit test
-- `POST /api/proctor/log` - Log proctor event
+### For Administrators:
+1. **Login**: Access admin dashboard
+2. **Manage Tests**: Create new tests, publish/unpublish existing ones
+3. **Monitor Candidates**: View all registered users and their profiles
+4. **Review Results**: Analyze test performance and proctoring data
 
-## Contributing
+## 🔒 Security Features
 
-1. Fork the repo
-2. Create a feature branch
-3. Commit changes
-4. Push and create PR
+- **JWT Authentication**: Secure token-based authentication
+- **Password Hashing**: bcrypt encryption for password security
+- **Role-Based Access**: Separate permissions for admins and candidates
+- **Input Validation**: Comprehensive validation on both client and server
+- **AI Proctoring**: Advanced cheating prevention mechanisms
 
-## License
+## 🎨 UI/UX Features
 
-MIT
+- **Modern Design**: Glassmorphism effects with backdrop blur
+- **Dark Mode**: Complete dark/light theme support
+- **Responsive Layout**: Mobile-friendly design
+- **Smooth Animations**: Framer Motion for enhanced user experience
+- **Consistent Styling**: Unified design language across all components
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- Face-API.js for providing excellent face detection capabilities
+- React community for the amazing ecosystem
+- MongoDB for reliable database solutions
+
+## 📞 Support
+
+For support, please open an issue in the GitHub repository or contact the development team.
+
+---
+
+**Note**: This system is designed for educational purposes and should be used in accordance with institutional policies and regulations.

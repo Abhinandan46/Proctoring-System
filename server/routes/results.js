@@ -7,7 +7,8 @@ const router = express.Router();
 
 router.get('/', auth, async (req, res) => {
   try {
-    const results = await Result.find().populate('user', 'email').populate('test', 'title');
+    const query = req.user.role === 'admin' ? {} : { user: req.user.id };
+    const results = await Result.find(query).populate('user', 'email').populate('test', 'title');
     res.json(results);
   } catch (error) {
     console.error('Error fetching results:', error);
@@ -41,19 +42,6 @@ router.get('/:id', auth, async (req, res) => {
   }
 });
 
-router.get('/test/:testId', auth, async (req, res) => {
-  if (!mongoose.Types.ObjectId.isValid(req.params.testId)) {
-    return res.status(400).json({ message: 'Invalid test ID' });
-  }
-  try {
-    const results = await Result.find({ test: req.params.testId });
-    res.json(results);
-  } catch (error) {
-    console.error('Error fetching results by test:', error);
-    res.status(500).json({ message: 'Server error' });
-  }
-});
-
 router.get('/user/:userId', auth, async (req, res) => {
   if (!mongoose.Types.ObjectId.isValid(req.params.userId)) {
     return res.status(400).json({ message: 'Invalid user ID' });
@@ -68,3 +56,19 @@ router.get('/user/:userId', auth, async (req, res) => {
 });
 
 module.exports = router;
+
+router.delete('/:id', auth, async (req, res) => {
+  if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+    return res.status(400).json({ message: 'Invalid ID' });
+  }
+  try {
+    if (req.user.role !== 'admin') {
+      return res.status(403).json({ message: 'Forbidden' });
+    }
+    await Result.findByIdAndDelete(req.params.id);
+    res.json({ message: 'Result deleted' });
+  } catch (error) {
+    console.error('Error deleting result:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});

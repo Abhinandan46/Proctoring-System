@@ -20,6 +20,7 @@ const TestAttempt = () => {
   const [testStarted, setTestStarted] = useState(false);
   const [mediaError, setMediaError] = useState('');
   const [stream, setStream] = useState(null);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
 
   useEffect(() => {
     const loadModels = async () => {
@@ -158,7 +159,7 @@ const TestAttempt = () => {
   }, [testStarted, stream]);
 
   const handleAnswerChange = (questionId, answer) => {
-    setAnswers({ ...answers, [questionId]: answer });
+    setAnswers({ ...answers, [questionId]: answer.charAt(0) });
   };
 
   const submitTest = async () => {
@@ -227,24 +228,39 @@ const TestAttempt = () => {
             </div>
           </div>
         </div>
+        <div className="mb-6">
+          <div className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg border border-white/30 dark:border-gray-700/30 rounded-3xl p-4">
+            <div className="flex justify-between text-sm text-gray-600 dark:text-gray-300 mb-2">
+              <span>Progress</span>
+              <span>{currentQuestionIndex + 1} / {test.questions.length}</span>
+            </div>
+            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+              <div
+                className="bg-gradient-to-r from-blue-500 to-purple-500 dark:from-purple-500 dark:to-teal-500 h-2 rounded-full transition-all duration-300"
+                style={{ width: `${((currentQuestionIndex + 1) / test.questions.length) * 100}%` }}
+              ></div>
+            </div>
+          </div>
+        </div>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2">
             <div className="space-y-6">
-              {test.questions.map((q, index) => (
-                <div key={q._id} className="card">
+              {test.questions.length > 0 && (
+                <div className="card">
                   <div className="card-header">
-                    <h3 className="card-title">Question {index + 1}</h3>
+                    <h3 className="card-title">Question {currentQuestionIndex + 1} of {test.questions.length}</h3>
                   </div>
                   <div className="card-content">
-                    <p className="mb-4 text-lg">{q.question}</p>
+                    <p className="mb-4 text-lg">{test.questions[currentQuestionIndex].question}</p>
                     <div className="space-y-2">
-                      {q.options.map((opt, i) => (
+                      {test.questions[currentQuestionIndex].options.map((opt, i) => (
                         <label key={i} className="flex items-center space-x-3 p-3 border rounded-lg hover:bg-accent cursor-pointer">
                           <input
                             type="radio"
-                            name={q._id}
+                            name={`question-${currentQuestionIndex}`}
                             value={opt}
-                            onChange={(e) => handleAnswerChange(q._id, e.target.value)}
+                            checked={answers[test.questions[currentQuestionIndex]._id] === opt.charAt(0)}
+                            onChange={(e) => handleAnswerChange(test.questions[currentQuestionIndex]._id, e.target.value)}
                             className="text-primary"
                           />
                           <span>{opt}</span>
@@ -253,7 +269,29 @@ const TestAttempt = () => {
                     </div>
                   </div>
                 </div>
-              ))}
+              )}
+              <div className="flex justify-between">
+                <button
+                  onClick={() => setCurrentQuestionIndex(prev => Math.max(0, prev - 1))}
+                  disabled={currentQuestionIndex === 0}
+                  className="flex items-center px-6 py-3 bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 disabled:from-gray-300 disabled:to-gray-400 text-white rounded-full font-medium transition-all duration-300 hover:shadow-lg transform hover:scale-105 disabled:transform-none disabled:shadow-none disabled:cursor-not-allowed"
+                >
+                  <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                  </svg>
+                  Previous
+                </button>
+                <button
+                  onClick={() => setCurrentQuestionIndex(prev => Math.min(test.questions.length - 1, prev + 1))}
+                  disabled={currentQuestionIndex === test.questions.length - 1}
+                  className="flex items-center px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 disabled:from-gray-300 disabled:to-gray-400 text-white rounded-full font-medium transition-all duration-300 hover:shadow-lg transform hover:scale-105 disabled:transform-none disabled:shadow-none disabled:cursor-not-allowed"
+                >
+                  Next
+                  <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </button>
+              </div>
             </div>
             <div className="mt-8">
               <button onClick={submitTest} className="btn btn-primary w-full py-3 text-lg">
@@ -262,7 +300,7 @@ const TestAttempt = () => {
             </div>
           </div>
           <div className="lg:col-span-1">
-            <div className="card">
+            <div className="card sticky top-6">
               <div className="card-header">
                 <h3 className="card-title">Proctoring Monitor</h3>
               </div>

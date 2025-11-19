@@ -2,11 +2,23 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { motion } from 'framer-motion';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
-import { FaChartBar, FaTrophy, FaUser, FaCalendar, FaEye } from 'react-icons/fa';
+import { FaChartBar, FaTrophy, FaUser, FaCalendar, FaEye, FaTrash } from 'react-icons/fa';
 import ThemeToggle from '../components/ThemeToggle';
 
 const Results = () => {
   const [results, setResults] = useState([]);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const token = localStorage.getItem('token');
+      const res = await axios.get('/api/auth/me', {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setUser(res.data);
+    };
+    fetchUser();
+  }, []);
 
   useEffect(() => {
     const fetchResults = async () => {
@@ -19,7 +31,16 @@ const Results = () => {
     fetchResults();
   }, []);
 
-  const data = results.map(r => ({ name: r.user.email, score: r.score }));
+  const deleteResult = async (id) => {
+    if (!window.confirm('Are you sure you want to delete this result?')) return;
+    const token = localStorage.getItem('token');
+    await axios.delete(`/api/results/${id}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    setResults(results.filter(r => r._id !== id));
+  };
+
+  const data = results.map(r => ({ name: r.user?.email || 'N/A', score: r.score }));
 
   return (
     <div className="bg-background min-h-screen">
@@ -147,17 +168,30 @@ const Results = () => {
                           )}
                         </td>
                         <td className="p-4">
-                          <motion.button
-                            whileHover={{ scale: 1.1 }}
-                            whileTap={{ scale: 0.9 }}
-                            className="px-3 py-1 rounded-lg text-sm font-medium bg-blue-500 hover:bg-blue-600 text-white transition-all duration-200"
-                            onClick={() => {
-                              // Navigate to detailed result view
-                            }}
-                          >
-                            <FaEye className="inline mr-1" />
-                            View Details
-                          </motion.button>
+                          <div className="flex space-x-2">
+                            <motion.button
+                              whileHover={{ scale: 1.1 }}
+                              whileTap={{ scale: 0.9 }}
+                              className="px-3 py-1 rounded-lg text-sm font-medium bg-blue-500 hover:bg-blue-600 text-white transition-all duration-200"
+                              onClick={() => {
+                                // Navigate to detailed result view
+                              }}
+                            >
+                              <FaEye className="inline mr-1" />
+                              View Details
+                            </motion.button>
+                            {user?.role === 'admin' && (
+                              <motion.button
+                                whileHover={{ scale: 1.1 }}
+                                whileTap={{ scale: 0.9 }}
+                                className="px-3 py-1 rounded-lg text-sm font-medium bg-red-500 hover:bg-red-600 text-white transition-all duration-200"
+                                onClick={() => deleteResult(result._id)}
+                              >
+                                <FaTrash className="inline mr-1" />
+                                Delete
+                              </motion.button>
+                            )}
+                          </div>
                         </td>
                       </motion.tr>
                     ))}

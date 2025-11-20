@@ -44,8 +44,8 @@ const CandidateDashboard = () => {
           axios.get('/api/results', { headers: { Authorization: `Bearer ${token}` } }),
           axios.get('/api/auth/me', { headers: { Authorization: `Bearer ${token}` } })
         ]);
-        setTests(testsRes.data.filter(t => t.published));
-        setResults(resultsRes.data);
+        setTests(Array.isArray(testsRes.data) ? testsRes.data.filter(t => t.published) : []);
+        setResults(Array.isArray(resultsRes.data) ? resultsRes.data : []);
         setUser(userRes.data);
         setEditName(userRes.data.name || '');
         setEditPhone(userRes.data.phone || '');

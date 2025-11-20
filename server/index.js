@@ -29,7 +29,7 @@ const resultRoutes = require('./routes/results');
 const proctorRoutes = require('./routes/proctor');
 
 app.use('/api/auth', authRoutes);
-app.use('/api/tests', testRoutes);
+app.use('/api', testRoutes);
 app.use('/api/candidates', candidateRoutes);
 app.use('/api/results', resultRoutes);
 app.use('/api/proctor', proctorRoutes);

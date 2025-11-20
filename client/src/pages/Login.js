@@ -3,9 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { FaUser, FaLock, FaEye, FaEyeSlash, FaShieldAlt } from 'react-icons/fa';
 import ThemeToggle from '../components/ThemeToggle';
 
-// Environment Variable को यहां डिफाइन करें
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-
 const Login = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState('');
@@ -18,12 +15,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-
-    // 1. Login/Register URL को फिक्स किया गया
-    const url = isLogin 
-      ? `${BACKEND_URL}/api/auth/login` 
-      : `${BACKEND_URL}/api/auth/register`;
-      
+    const url = isLogin ? 'http://localhost:5000/api/auth/login' : 'http://localhost:5000/api/auth/register';
     try {
       const body = isLogin ? { email, password } : { email, password, name, role: 'candidate' };
       const response = await fetch(url, {
@@ -35,9 +27,8 @@ const Login = () => {
       if (response.ok) {
         if (isLogin) {
           localStorage.setItem('token', data.token);
-          
-          // 2. Fetch user info URL को फिक्स किया गया
-          const userResponse = await fetch(`${BACKEND_URL}/api/auth/me`, { 
+          // Fetch user info to determine role
+          const userResponse = await fetch('http://localhost:5000/api/auth/me', {
             headers: { Authorization: `Bearer ${data.token}` },
           });
           const userData = await userResponse.json();
@@ -47,8 +38,7 @@ const Login = () => {
             navigate('/candidate');
           }
         } else {
-          // NOTE: DO NOT use alert() in production React apps. Use a modal or toast.
-          alert('Registered successfully, please login'); 
+          alert('Registered successfully, please login');
           setIsLogin(true);
         }
       } else {

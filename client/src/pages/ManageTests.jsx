@@ -106,7 +106,7 @@ const ManageTests = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {tests.map((test, index) => (
+                  {tests && Array.isArray(tests) && tests.map((test, index) => (
                     <motion.tr
                       key={test._id}
                       initial={{ opacity: 0, y: 20 }}

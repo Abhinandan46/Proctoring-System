@@ -136,7 +136,7 @@ const Candidates = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {candidates.map((candidate, index) => (
+                    {candidates && Array.isArray(candidates) && candidates.map((candidate, index) => (
                       <motion.tr
                         key={candidate._id}
                         initial={{ opacity: 0, y: 20 }}

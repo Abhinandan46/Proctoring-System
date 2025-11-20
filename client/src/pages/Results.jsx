@@ -26,7 +26,7 @@ const Results = () => {
       const res = await axios.get('/api/results', {
         headers: { Authorization: `Bearer ${token}` }
       });
-      setResults(res.data);
+      setResults(Array.isArray(res.data) ? res.data : []);
     };
     fetchResults();
   }, []);
@@ -40,7 +40,7 @@ const Results = () => {
     setResults(results.filter(r => r._id !== id));
   };
 
-  const data = results.map(r => ({ name: r.user?.email || 'N/A', score: r.score }));
+  const data = results && Array.isArray(results) ? results.map(r => ({ name: r.user?.email || 'N/A', score: r.score })) : [];
 
   return (
     <div className="bg-background min-h-screen">
@@ -133,7 +133,7 @@ const Results = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {results.map((result, index) => (
+                    {results && Array.isArray(results) && results.map((result, index) => (
                       <motion.tr
                         key={result._id}
                         initial={{ opacity: 0, y: 20 }}

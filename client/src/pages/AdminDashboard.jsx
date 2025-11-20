@@ -202,7 +202,7 @@ const AdminDashboard = () => {
               </div>
               <div className="card-content">
                 <div className="space-y-4">
-                  {tests.slice(0, 5).map(test => (
+                  {tests && Array.isArray(tests) && tests.slice(0, 5).map(test => (
                     <div key={test._id} className="flex items-center justify-between p-3 border rounded-lg">
                       <div>
                         <p className="font-medium">{test.title}</p>
@@ -225,7 +225,7 @@ const AdminDashboard = () => {
               </div>
               <div className="card-content">
                 <div className="space-y-4">
-                  {candidates.slice(0, 5).map(candidate => (
+                  {candidates && Array.isArray(candidates) && candidates.slice(0, 5).map(candidate => (
                     <div key={candidate._id} className="flex items-center justify-between p-3 border rounded-lg">
                       <div>
                         <p className="font-medium">{candidate.name}</p>
@@ -258,7 +258,7 @@ const AdminDashboard = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {results.slice(0, 5).map(result => (
+                    {results && Array.isArray(results) && results.slice(0, 5).map(result => (
                       <tr key={result._id} className="border-b hover:bg-muted/50">
                         <td className="p-3">{result.test?.title || 'N/A'}</td>
                         <td className="p-3">{result.user?.email || 'N/A'}</td>

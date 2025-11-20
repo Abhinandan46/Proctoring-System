@@ -321,7 +321,7 @@ const CandidateDashboard = () => {
             </motion.div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {tests.map((test, index) => (
+              {tests && Array.isArray(tests) && tests.map((test, index) => (
                 <motion.div
                   key={test._id}
                   initial={{ opacity: 0, y: 20 }}
@@ -391,7 +391,7 @@ const CandidateDashboard = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {results.map((result, index) => (
+                  {results && Array.isArray(results) && results.map((result, index) => (
                     <motion.tr
                       key={result._id}
                       initial={{ opacity: 0 }}

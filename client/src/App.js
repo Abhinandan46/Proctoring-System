@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import axios from 'axios';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import AdminDashboard from './pages/AdminDashboard';
@@ -11,6 +12,9 @@ import CandidateDashboard from './pages/CandidateDashboard';
 import TestAttempt from './pages/TestAttempt';
 import ResultSummary from './pages/ResultSummary';
 import Layout from './components/Layout';
+
+// Configure axios base URL
+axios.defaults.baseURL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 
 function App() {
   return (

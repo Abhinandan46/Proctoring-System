@@ -19,7 +19,7 @@ router.post('/', auth, async (req, res) => {
 
 router.get('/', auth, async (req, res) => {
   try {
-    const tests = await Test.find().populate('createdBy', 'email role');
+    const tests = await Test.find();
     res.json(tests);
   } catch (error) {
     console.error('Error fetching tests:', error);
@@ -40,7 +40,7 @@ router.get('/:id', auth, async (req, res) => {
   }
 });
 
-router.put('/tests/:id', auth, async (req, res) => {
+router.put('/:id', auth, async (req, res) => {
   if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
     return res.status(400).json({ message: 'Invalid ID' });
   }
@@ -53,7 +53,7 @@ router.put('/tests/:id', auth, async (req, res) => {
   }
 });
 
-router.delete('/tests/:id', auth, async (req, res) => {
+router.delete('/:id', auth, async (req, res) => {
   if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
     return res.status(400).json({ message: 'Invalid ID' });
   }
@@ -66,7 +66,7 @@ router.delete('/tests/:id', auth, async (req, res) => {
   }
 });
 
-router.patch('/tests/:id/publish', auth, async (req, res) => {
+router.patch('/:id/publish', auth, async (req, res) => {
   if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
     return res.status(400).json({ message: 'Invalid ID' });
   }
@@ -79,7 +79,7 @@ router.patch('/tests/:id/publish', auth, async (req, res) => {
   }
 });
 
-router.post('/tests/generate', auth, async (req, res) => {
+router.post('/generate', auth, async (req, res) => {
   try {
     const { topic, numQuestions, difficulty } = req.body;
     console.log('Generating test for:', topic, numQuestions, difficulty);

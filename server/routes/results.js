@@ -7,8 +7,7 @@ const router = express.Router();
 
 router.get('/', auth, async (req, res) => {
   try {
-    const query = req.user.role === 'admin' ? {} : { user: req.user.id };
-    const results = await Result.find(query).populate('user', 'email').populate('test', 'title');
+    const results = await Result.find().populate('user', 'email').populate('test', 'title');
     res.json(results);
   } catch (error) {
     console.error('Error fetching results:', error);

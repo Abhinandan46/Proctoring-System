@@ -15,7 +15,7 @@ router.post('/', auth, async (req, res) => {
   }
 });
 
-router.get('/', auth, async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const candidates = await Candidate.find();
     res.json(candidates);

@@ -10,6 +10,7 @@ const examRoutes = require('./routes/exams');
 const testRoutes = require('./routes/tests');
 const candidateRoutes = require('./routes/candidates');
 const resultRoutes = require('./routes/results');
+const proctorRoutes = require('./routes/proctor');
 
 const app = express();
 
@@ -25,6 +26,7 @@ app.use('/api/exams', examRoutes);
 app.use('/api/tests', testRoutes);
 app.use('/api/candidates', candidateRoutes);
 app.use('/api/results', resultRoutes);
+app.use('/api/proctor', proctorRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

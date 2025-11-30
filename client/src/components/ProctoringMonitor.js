@@ -18,7 +18,7 @@ const ProctoringMonitor = ({ videoRef, examId }) => {
   const token = localStorage.getItem('token');
 
   const logEvent = async (event) => {
-    await fetch('http://localhost:5000/api/results/log', {
+    await fetch('http://localhost:5000/api/proctor/log', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

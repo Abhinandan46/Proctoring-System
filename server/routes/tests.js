@@ -6,7 +6,7 @@ const { GoogleGenerativeAI } = require('@google/generative-ai');
 
 const router = express.Router();
 
-router.post('/tests', auth, async (req, res) => {
+router.post('/', auth, async (req, res) => {
   try {
     const test = new Test({ ...req.body, createdBy: req.user.id });
     await test.save();
@@ -17,7 +17,7 @@ router.post('/tests', auth, async (req, res) => {
   }
 });
 
-router.get('/tests', auth, async (req, res) => {
+router.get('/', auth, async (req, res) => {
   try {
     const tests = await Test.find().populate('createdBy', 'email role');
     res.json(tests);
@@ -27,7 +27,7 @@ router.get('/tests', auth, async (req, res) => {
   }
 });
 
-router.get('/tests/:id', auth, async (req, res) => {
+router.get('/:id', auth, async (req, res) => {
   if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
     return res.status(400).json({ message: 'Invalid ID' });
   }

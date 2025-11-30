@@ -7,6 +7,8 @@ dotenv.config();
 
 const authRoutes = require('./routes/auth');
 const examRoutes = require('./routes/exams');
+const testRoutes = require('./routes/tests');
+const candidateRoutes = require('./routes/candidates');
 const resultRoutes = require('./routes/results');
 
 const app = express();
@@ -20,6 +22,8 @@ mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopol
 
 app.use('/api/auth', authRoutes);
 app.use('/api/exams', examRoutes);
+app.use('/api/tests', testRoutes);
+app.use('/api/candidates', candidateRoutes);
 app.use('/api/results', resultRoutes);
 
 const PORT = process.env.PORT || 5000;

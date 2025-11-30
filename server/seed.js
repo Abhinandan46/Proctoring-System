@@ -12,8 +12,8 @@ const seed = async () => {
   const hashedAdmin = await bcrypt.hash('admin123', 10);
   const hashedCandidate = await bcrypt.hash('candidate123', 10);
 
-  const admin = await User.create({ email: 'admin@example.com', password: hashedAdmin, role: 'admin' });
-  const candidateUser = await User.create({ email: 'candidate@example.com', password: hashedCandidate, role: 'candidate' });
+  const admin = await User.create({ email: 'admin@example.com', password: hashedAdmin, role: 'admin', name: 'Admin User' });
+  const candidateUser = await User.create({ email: 'candidate@example.com', password: hashedCandidate, role: 'candidate', name: 'John Doe' });
 
   const test1 = await Test.create({
     title: 'Sample Test 1',

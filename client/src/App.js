@@ -17,6 +17,20 @@ import Layout from './components/Layout';
 // Configure axios base URL
 axios.defaults.baseURL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 
+// Add axios interceptor to include JWT token in requests
+axios.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
 function App() {
   return (
     <BrowserRouter future={{ v7_relativeSplatPath: true, v7_startTransition: true }}>

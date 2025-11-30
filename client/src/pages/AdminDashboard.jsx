@@ -18,9 +18,9 @@ const AdminDashboard = () => {
       try {
         const token = localStorage.getItem('token');
         const [testsRes, candidatesRes, resultsRes] = await Promise.all([
-          axios.get('/api/tests', { headers: { Authorization: `Bearer ${token}` } }),
-          axios.get('/api/candidates', { headers: { Authorization: `Bearer ${token}` } }),
-          axios.get('/api/results', { headers: { Authorization: `Bearer ${token}` } })
+          axios.get('/api/tests'),
+          axios.get('/api/candidates'),
+          axios.get('/api/results')
         ]);
         setTests(testsRes.data);
         setCandidates(candidatesRes.data);

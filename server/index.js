@@ -23,13 +23,15 @@ process.on('unhandledRejection', (reason, promise) => {
 });
 
 const authRoutes = require('./routes/auth');
+const examRoutes = require('./routes/exams');
 const testRoutes = require('./routes/tests');
 const candidateRoutes = require('./routes/candidates');
 const resultRoutes = require('./routes/results');
 const proctorRoutes = require('./routes/proctor');
 
 app.use('/api/auth', authRoutes);
-app.use('/api', testRoutes);
+app.use('/api/exams', examRoutes);
+app.use('/api/tests', testRoutes);
 app.use('/api/candidates', candidateRoutes);
 app.use('/api/results', resultRoutes);
 app.use('/api/proctor', proctorRoutes);

@@ -54,8 +54,6 @@ router.get('/user/:userId', auth, async (req, res) => {
   }
 });
 
-module.exports = router;
-
 router.delete('/:id', auth, async (req, res) => {
   if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
     return res.status(400).json({ message: 'Invalid ID' });
@@ -71,3 +69,5 @@ router.delete('/:id', auth, async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 });
+
+module.exports = router;

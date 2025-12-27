@@ -140,7 +140,7 @@ Before running this application, make sure you have the following installed:
 
 ## � Documentation
 
-Watch the demo video: [AI Proctoring System Demo](https://youtu.be/reYbH5wllkU?si=sPrn776MLveCnayp)
+[![AI Proctoring System Demo](https://img.youtube.com/vi/reYbH5wllkU/0.jpg)](https://youtu.be/reYbH5wllkU?si=sPrn776MLveCnayp)
 
 ## �🔒 Security Features
 

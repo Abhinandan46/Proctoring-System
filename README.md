@@ -138,10 +138,6 @@ Before running this application, make sure you have the following installed:
 3. **Monitor Candidates**: View all registered users and their profiles
 4. **Review Results**: Analyze test performance and proctoring data
 
-## � Documentation
-
-[![AI Proctoring System Demo](https://img.youtube.com/vi/reYbH5wllkU/0.jpg)](https://youtu.be/reYbH5wllkU?si=sPrn776MLveCnayp)
-
 ## �🔒 Security Features
 
 - **JWT Authentication**: Secure token-based authentication

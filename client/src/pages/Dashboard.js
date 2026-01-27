@@ -8,7 +8,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchExams = async () => {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5000/api/exams', {
+      const response = await fetch('https://proctoring-system-ywip.onrender.com/api/exams', {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await response.json();

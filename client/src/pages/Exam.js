@@ -16,7 +16,7 @@ const Exam = () => {
   useEffect(() => {
     const fetchExam = async () => {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:5000/api/exams/${id}`, {
+      const response = await fetch(`https://proctoring-system-ywip.onrender.com/api/exams/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await response.json();
@@ -40,7 +40,7 @@ const Exam = () => {
 
   const submitExam = async () => {
     const token = localStorage.getItem('token');
-    await fetch(`http://localhost:5000/api/results`, {
+    await fetch(`https://proctoring-system-ywip.onrender.com/api/results`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

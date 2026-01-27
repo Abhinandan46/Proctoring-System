@@ -15,7 +15,7 @@ import ResultSummary from './pages/ResultSummary';
 import Layout from './components/Layout';
 
 // Configure axios base URL
-axios.defaults.baseURL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+axios.defaults.baseURL = 'https://proctoring-system-ywip.onrender.com';
 
 // Add axios interceptor to include JWT token in requests
 axios.interceptors.request.use(
